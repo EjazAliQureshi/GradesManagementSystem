@@ -14,14 +14,20 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "studentId")
+    private Student studentId;
 
-//    private Student student;
-//
-//    private Course course;
+    @Column(insertable=false, updatable=false)
+    private Long course_Id;
 
-    @Column(name = "isCompleted")
-    private boolean isCompleted;
+    @ManyToOne
+    @JoinColumn(name = "course_Id")
+    private Course course;
 
-    // Getters and setters
+    @Column(name = "grade")
+    private String grade;
+
+
 }
 

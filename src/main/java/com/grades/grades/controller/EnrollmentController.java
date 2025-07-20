@@ -1,6 +1,7 @@
 package com.grades.grades.controller;
 
 import com.grades.grades.dto.EnrollmentDTO;
+import com.grades.grades.dto.StudentGradeDTO;
 import com.grades.grades.service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,40 +10,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/enrollments")
+@RequestMapping("/api/v1/enrollments")
 public class EnrollmentController {
+
     @Autowired
     private EnrollmentService enrollmentService;
 
-//    // Enroll a student in multiple courses
-//    @PostMapping("/student/{studentId}")
-//    public ResponseEntity<List<EnrollmentDTO>> enrollStudentInCourses(
-//            @PathVariable Long studentId,
-//            @RequestBody List<Long> courseIds) {
-//        List<EnrollmentDTO> enrollments = enrollmentService.enrollStudentInCourses(studentId, courseIds);
-//        return ResponseEntity.ok(enrollments);
-//    }
-//
-//    // Get all enrollments for a student
-//    @GetMapping("/student/{studentId}")
-//    public ResponseEntity<List<EnrollmentDTO>> getEnrollmentsByStudent(@PathVariable Long studentId) {
-//        List<EnrollmentDTO> enrollments = enrollmentService.getEnrollmentsByStudent(studentId);
-//        return ResponseEntity.ok(enrollments);
-//    }
-//
-//    // Get all enrollments for a course
-//    @GetMapping("/course/{courseId}")
-//    public ResponseEntity<List<EnrollmentDTO>> getEnrollmentsByCourse(@PathVariable Long courseId) {
-//        List<EnrollmentDTO> enrollments = enrollmentService.getEnrollmentsByCourse(courseId);
-//        return ResponseEntity.ok(enrollments);
-//    }
-//
-//    // Validate grade format and update grade for an enrollment
-//    @PutMapping("/{enrollmentId}/grade")
-//    public ResponseEntity<Void> updateGrade(
-//            @PathVariable Long enrollmentId,
-//            @RequestBody String gradeValue) {
-//        enrollmentService.updateGrade(enrollmentId, gradeValue);
-//        return ResponseEntity.noContent().build();
-//    }
+    @PostMapping
+    public ResponseEntity<EnrollmentDTO> createEnrollment(@RequestBody EnrollmentDTO dto) {
+        return ResponseEntity.ok(enrollmentService.createEnrollment(dto));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EnrollmentDTO>> getAll() {
+        return ResponseEntity.ok(enrollmentService.getAllEnrollments());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EnrollmentDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(enrollmentService.getEnrollmentById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EnrollmentDTO> update(@PathVariable Long id, @RequestBody EnrollmentDTO dto) {
+        return ResponseEntity.ok(enrollmentService.updateEnrollment(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        enrollmentService.deleteEnrollment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/student/{studentId}/grades")
+    public ResponseEntity<List<StudentGradeDTO>> getGradesForStudent(@PathVariable Long studentId) {
+        return ResponseEntity.ok(enrollmentService.getGradesByStudentId(studentId));
+    }
+
+    @GetMapping("/student/grades")
+    public ResponseEntity<List<StudentGradeDTO>> getAllGradesForStudent() {
+        return ResponseEntity.ok(enrollmentService.getAllGrades());
+    }
 }

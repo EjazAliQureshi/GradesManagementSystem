@@ -28,5 +28,6 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private List<Course> courses = new ArrayList<>();
-    // getters and setters
+    @OneToMany(mappedBy = "studentId")
+    private Set<Enrollment> enrollments;
 }

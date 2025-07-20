@@ -31,8 +31,8 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private List<Student> students = new ArrayList<>();
 
-
-//    private List<Enrollment> enrollments;
+    @OneToMany(mappedBy = "course_Id")
+    private Set<Enrollment> enrollments;
 
 }
 
